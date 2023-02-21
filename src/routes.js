@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import authenticateUser from './_middlewares/authenticate-user.js'
 
 const router = Router()
 
@@ -8,3 +9,19 @@ export default router
 
 // API | AUTH
 router.post('/api/auth/signup', (await import('./controllers/api/auth/signup.js')).default)
+router.post('/api/auth/login', (await import('./controllers/api/auth/login.js')).default)
+router.delete('/api/auth/logout', (await import('./controllers/api/auth/logout.js')).default)
+
+// TEST authenticateUser
+router.get('/api/my/private', authenticateUser('json'), (req, res) => {
+  res.json('Private Data!')
+})
+router.get('/my/private', authenticateUser('html'), (req, res) => {
+  res.send('<div>Private Page</div>')
+})
+
+// API | MY PROFILE
+router.get('/api/my/profile', authenticateUser('json'), (await import('./controllers/api/my/profile/show.js')).default)
+
+// API | TWEETS
+router.post('/api/posts', (await import('./controllers/api/posts/create.js')).default)
