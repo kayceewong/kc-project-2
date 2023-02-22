@@ -1,5 +1,6 @@
 @import 'node_modules/bootstrap/scss/bootstrap';
 
-.nav-item .nav-link {
-  color: whitesmoke;
+.nav-item .nav-link .navbar-brand .navbar-nav a {
+  font-family: Lucida Sans, sans-serif;
+  font-size: 16px;
 }
