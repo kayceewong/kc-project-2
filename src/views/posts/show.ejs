@@ -1,0 +1,74 @@
+<!-- src/views/posts/show.ejs -->
+<%- contentFor('styles') %>
+  <%- contentFor('scripts') %>
+    <script>
+      const id = window.location.pathname.split('/').reverse()[0]
+
+      const generateTitle = ({ isLoading, post } = {}) => {
+        if (isLoading) return `<div class="text-center">Loading...</div>`
+        if (!post) return `<h1 class="text-center mb-3">Post ${id} Not Found!</h1>`
+
+        return `<h1 class="text-center mb-3">Post ${id}</h1>`
+      }
+
+      const generatePost = ({ isLoading, post } = {}) => {
+        if (isLoading || !post) return ''
+
+        return $(`
+    <div class="row">
+      <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <div class="card">
+          <div class="card-body text-center">
+            <p class="card-text mb-3">${post.content}</p>
+            <p class="card-subtitle text-muted mb-3">${moment(post.createdAt).format('YYYY/MM/DD')}</p>
+
+            <div>
+              <a href="/posts/${id}/edit" class="btn btn-primary btn-sm">Edit</a>
+              <button id="delete-post" class="btn btn-danger btn-sm">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `)
+      }
+
+      const generatePage = (info) => {
+        const $page = $('#pages-posts-show')
+        const $title = generateTitle(info)
+        const $post = generatePost(info)
+
+        $page.html('').append($title).append($post)
+      }
+
+      const getPost = () => {
+        axios({
+          method: 'GET',
+          url: `/api/posts/${id}`
+        }).then((resp) => {
+          generatePage({ post: resp.data })
+        }).catch(() => {
+          generatePage()
+        })
+      }
+
+      const handleDelete = (e) => {
+        $(e.currentTarget).attr('disabled', true)
+
+        axios({
+          method: 'DELETE',
+          url: `/api/posts/${id}`
+        }).then((resp) => {
+          window.location.href = '/posts'
+        })
+      }
+
+      $(document).ready(() => {
+        generatePage({ isLoading: true })
+        getPost()
+        $('#pages-posts-show').on('click', '#delete-post', handleDelete)
+      })
+    </script>
+
+    <%- contentFor('body') %>
+      <div id="pages-posts-show" class="container"></div>

@@ -32,3 +32,12 @@ router.delete('/api/posts/:id', (await import('./controllers/api/posts/destroy.j
 
 // API | NOT FOUND
 router.use('/api', (await import('./controllers/api/not-found.js')).default)
+
+// PAGES | NOT FOUND
+router.use((await import('./controllers/pages/not-found.js')).default)
+
+// Pages | POSTS
+router.get('/posts/new', (await import('./controllers/pages/posts/new.js')).default)
+router.get('/posts/:id', (await import('./controllers/pages/posts/show.js')).default)
+router.get('/posts/:id/edit', (await import('./controllers/pages/posts/edit.js')).default)
+router.get('/posts', (await import('./controllers/pages/posts/index.js')).default)

@@ -1,0 +1,67 @@
+<!-- src/views/tweets/new.ejs -->
+<%- contentFor('styles') %>
+  <%- contentFor('scripts') %>
+    <script>
+      const generateTitle = () => {
+        return '<h1 class="text-center mb-3">New Post</h1>'
+      }
+
+      const generateForm = ({ post, errors } = {}) => {
+        return `
+    <div class="row">
+      <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <form id="post-new-form">
+          <div class="mb-3">
+            <label for="post-content" class="form-label">Content</label>
+            <textarea
+              id="post-content"
+              class="form-control ${errors?.content && 'is-invalid'}"
+              name="content"
+              rows="3"
+            >${post?.content || ''}</textarea>
+            <div class="invalid-feedback">${errors?.content || ''}</div>
+          </div>
+
+          <button class="btn btn-primary ms-auto" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  `
+      }
+
+      const generatePage = (info) => {
+        const $page = $('#pages-post-new')
+        const $title = generateTitle()
+        const $form = generateForm(info)
+
+        $page.html('').append($title).append($form)
+      }
+
+      const handleSubmit = (e) => {
+        e.preventDefault()
+
+        const data = new FormData(e.currentTarget)
+        $('#post-new-form button[type="submit"]').attr('disabled', true)
+
+        axios({
+          method: 'POST',
+          url: '/api/posts',
+          data
+        }).then((resp) => {
+          window.location.href = `/posts/${resp.data.id}`
+        }).catch((err) => {
+          generatePage({
+            post: parseFormData(data),
+            errors: err.response.data
+          })
+        })
+      }
+
+      $(document).ready(() => {
+        generatePage()
+        $('#pages-posts-new').on('submit', '#post-new-form', handleSubmit)
+      })
+    </script>
+
+    <%- contentFor('body') %>
+      <div id="pages-posts-new" class="container"></div>
