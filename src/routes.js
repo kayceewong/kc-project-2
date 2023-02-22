@@ -23,5 +23,12 @@ router.get('/my/private', authenticateUser('html'), (req, res) => {
 // API | MY PROFILE
 router.get('/api/my/profile', authenticateUser('json'), (await import('./controllers/api/my/profile/show.js')).default)
 
-// API | TWEETS
+// API | POSTS
 router.post('/api/posts', (await import('./controllers/api/posts/create.js')).default)
+router.get('/api/posts/:id', (await import('./controllers/api/posts/show.js')).default)
+router.get('/api/posts', (await import('./controllers/api/posts/index.js')).default)
+router.put('/api/posts/:id', (await import('./controllers/api/posts/update.js')).default)
+router.delete('/api/posts/:id', (await import('./controllers/api/posts/destroy.js')).default)
+
+// API | NOT FOUND
+router.use('/api', (await import('./controllers/api/not-found.js')).default)

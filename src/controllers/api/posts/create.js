@@ -8,15 +8,15 @@ const createSchema = yup.object({
   content: yup.string().required()
 })
 
-const controllersApiTweetsCreate = async (req, res) => {
+const controllersApiPostsCreate = async (req, res) => {
   try {
     const { body } = req
     const verifiedData = await createSchema.validate(body, { abortEarly: false, stripUnknown: true })
-    const newTweet = await prisma.tweet.create({ data: verifiedData })
-    return res.status(201).json(newTweet)
+    const newPost = await prisma.post.create({ data: verifiedData })
+    return res.status(201).json(newPost)
   } catch (err) {
     return handleErrors(res, err)
   }
 }
 
-export default controllersApiTweetsCreate
+export default controllersApiPostsCreate
