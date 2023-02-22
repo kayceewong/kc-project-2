@@ -1,8 +1,8 @@
 // src/controllers/api/posts/update.js
 import yup from 'yup'
 
-import prisma from '../../_helpers/prisma.js'
-import handleErrors from '../../_helpers/handle-errors.js'
+import prisma from '../../../_helpers/prisma.js'
+import handleErrors from '../../../_helpers/handle-errors.js'
 
 const updateSchema = yup.object({
   content: yup.string().required()

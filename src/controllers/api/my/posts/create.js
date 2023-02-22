@@ -1,8 +1,8 @@
 // src/controllers/api/posts/create.js
 import yup from 'yup'
 
-import prisma from '../../_helpers/prisma.js'
-import handleErrors from '../../_helpers/handle-errors.js'
+import prisma from '../../../_helpers/prisma.js'
+import handleErrors from '../../../_helpers/handle-errors.js'
 
 const createSchema = yup.object({
   content: yup.string().required()

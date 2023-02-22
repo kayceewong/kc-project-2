@@ -1,6 +1,6 @@
 // src/controllers/api/posts/destroy.js
-import prisma from '../../_helpers/prisma.js'
-import handleErrors from '../../_helpers/handle-errors.js'
+import prisma from '../../../_helpers/prisma.js'
+import handleErrors from '../../../_helpers/handle-errors.js'
 
 const controllersApiPostsDestroy = async (req, res) => {
   try {
