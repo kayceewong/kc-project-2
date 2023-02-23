@@ -1,6 +1,7 @@
-// src/controllers/pages/posts/index.js
-const controllersPagesPostsIndex = async (req, res) => {
-  res.render('posts/index')
+// src/controllers/pages/my/posts/index.js
+
+const controllersPagesMyPostsIndex = async (req, res) => {
+  res.render('my/posts/index')
 }
 
-export default controllersPagesPostsIndex
+export default controllersPagesMyPostsIndex

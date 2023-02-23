@@ -1,4 +1,5 @@
-// src/controllers/api/posts/create.js
+// src/controllers/api/my/posts/create.js
+
 import yup from 'yup'
 
 import prisma from '../../../_helpers/prisma.js'
@@ -8,7 +9,7 @@ const createSchema = yup.object({
   content: yup.string().required()
 })
 
-const controllersApiPostsCreate = async (req, res) => {
+const controllersApiMyPostsCreate = async (req, res) => {
   try {
     const { body } = req
     const verifiedData = await createSchema.validate(body, { abortEarly: false, stripUnknown: true })
@@ -19,4 +20,4 @@ const controllersApiPostsCreate = async (req, res) => {
   }
 }
 
-export default controllersApiPostsCreate
+export default controllersApiMyPostsCreate

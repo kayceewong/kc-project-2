@@ -1,6 +1,7 @@
-// src/controllers/pages/posts/new.js
-const controllersPagesPostsNew = async (req, res) => {
-  res.render('posts/new')
+// src/controllers/pages/my/posts/new.js
+
+const controllersPagesMyPostsNew = async (req, res) => {
+  res.render('my/posts/new')
 }
 
-export default controllersPagesPostsNew
+export default controllersPagesMyPostsNew

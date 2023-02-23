@@ -1,68 +1,69 @@
 <!-- src/views/posts/index.ejs -->
+
 <%- contentFor('styles') %>
-  <%- contentFor('scripts') %>
-    <script>
-      const generateTitle = () => {
-        return '<h1 class="text-center mb-3">Posts</h1>'
-      }
+<%- contentFor('scripts') %>
+<script>
+  const generateTitle = () => {
+    return '<h1 class="text-center mb-3">Posts</h1>'
+  }
 
-      const generatePost = (post) => {
-        return `
-    <div class="col">
-      <a class="card text-body" href="/posts/${post.id}" style="text-decoration: none;">
-        <div class="card-body text-center">
-          <p class="card-text mb-3">${post.content}</p>
-          <p class="card-subtitle text-muted mb-2">${moment(post.createdAt).format('YYYY/MM/DD')}</p>
-        </div>
-      </a>
-    </div>
-  `
-      }
-
-      const generatePosts = ({ isLoading, posts = [] } = {}) => {
-        if (isLoading) return '<div class="text-center mb-3">Loading...</div>'
-        if (posts.length === 0) {
-          return `
-      <h2 class="text-center mb-3">No Posts Found!</h2>
-      <div class="text-center">
-        <a class="btn btn-primary" href="/posts/new">Create New Post!</a>
+  const generatePost = (post) => {
+    return `
+      <div class="col">
+        <a class="card text-body" href="/posts/${post.id}" style="text-decoration: none;">
+          <div class="card-body text-center">
+            <p class="card-text mb-3">${post.content}</p>
+            <p class="card-subtitle text-muted mb-2">${moment(post.createdAt).format('YYYY/MM/DD')}</p>
+          </div>
+        </a>
       </div>
     `
-        }
+  }
 
-        return `
-    <div class="row">
-      <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-        <div id="posts-list" class="row row-cols-1 g-3">
-          ${posts.map((post) => generatePost(post)).join('')}
+  const generatePosts = ({ isLoading, posts = [] } = {}) => {
+    if (isLoading) return '<div class="text-center mb-3">Loading...</div>'
+    if (posts.length === 0) {
+      return `
+        <h2 class="text-center mb-3">No Posts Found!</h2>
+        <div class="text-center">
+          <a class="btn btn-primary" href="/posts/new">Create New Post!</a>
+        </div>
+      `
+    }
+
+    return `
+      <div class="row">
+        <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+          <div id="posts-list" class="row row-cols-1 g-3">
+            ${posts.map((post) => generatePost(post)).join('')}
+          </div>
         </div>
       </div>
-    </div>
-  `
-      }
+    `
+  }
 
-      const generatePage = (info) => {
-        const $page = $('#pages-posts-index')
-        const $title = generateTitle(info)
-        const $posts = generatePosts(info)
+  const generatePage = (info) => {
+    const $page = $('#pages-posts-index')
+    const $title = generateTitle(info)
+    const $posts = generatePosts(info)
 
-        $page.html('').append($title).append($posts)
-      }
+    $page.html('').append($title).append($posts)
+  }
 
-      const getPosts = () => {
-        axios({
-          method: 'GET',
-          url: '/api/posts'
-        }).then((resp) => {
-          generatePage({ posts: resp.data })
-        })
-      }
+  const getPosts = () => {
+    axios({
+      method: 'GET',
+      url: '/api/posts'
+    }).then((resp) => {
+      generatePage({ posts: resp.data })
+    })
+  }
 
-      $(document).ready(() => {
-        generatePage({ isLoading: true })
-        getPosts()
-      })
-    </script>
+  $(document).ready(() => {
+    generatePage({ isLoading: true })
+    getPosts()
+  })
+</script>
 
-    <%- contentFor('body') %>
-      <div id="pages-posts-index" class="container"></div>
+<%- contentFor('body') %>
+<div id="pages-posts-index" class="container"></div>

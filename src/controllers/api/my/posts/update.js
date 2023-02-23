@@ -1,4 +1,5 @@
-// src/controllers/api/posts/update.js
+// src/controllers/api/my/posts/update.js
+
 import yup from 'yup'
 
 import prisma from '../../../_helpers/prisma.js'
@@ -8,7 +9,7 @@ const updateSchema = yup.object({
   content: yup.string().required()
 })
 
-const controllersApiPostsUpdate = async (req, res) => {
+const controllersApiMyPostsUpdate = async (req, res) => {
   try {
     const { params: { id }, body } = req
     const verifiedData = await updateSchema.validate(body, { abortEarly: false, stripUnknown: true })
@@ -19,4 +20,4 @@ const controllersApiPostsUpdate = async (req, res) => {
   }
 }
 
-export default controllersApiPostsUpdate
+export default controllersApiMyPostsUpdate

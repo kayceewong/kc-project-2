@@ -1,8 +1,9 @@
-// src/controllers/api/posts/index.js
+// src/controllers/api/my/posts/index.js
+
 import prisma from '../../../_helpers/prisma.js'
 import handleErrors from '../../../_helpers/handle-errors.js'
 
-const controllersApiPostsIndex = async (req, res) => {
+const controllersApiMyPostsIndex = async (req, res) => {
   try {
     const foundPosts = await prisma.post.findMany()
     return res.status(200).json(foundPosts)
@@ -11,4 +12,4 @@ const controllersApiPostsIndex = async (req, res) => {
   }
 }
 
-export default controllersApiPostsIndex
+export default controllersApiMyPostsIndex

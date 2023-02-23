@@ -1,4 +1,5 @@
 <!-- src/views/tweets/new.ejs -->
+
 <%- contentFor('styles') %>
   <%- contentFor('scripts') %>
     <script>
@@ -45,7 +46,7 @@
 
         axios({
           method: 'POST',
-          url: '/api/posts',
+          url: '/api/my/posts',
           data
         }).then((resp) => {
           window.location.href = `/posts/${resp.data.id}`

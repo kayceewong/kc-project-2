@@ -1,3 +1,5 @@
+// src/_middlewares/authenticate-user.js
+
 const authenticateUser = (format) => (req, res, next) => {
   if (!req.session?.user?.id) {
     if (format === 'json') return res.status(401).json('Please Login First!')
