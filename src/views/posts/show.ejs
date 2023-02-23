@@ -1,7 +1,7 @@
 <!-- src/views/posts/show.ejs -->
 
 <%- contentFor('styles') %>
-  <%- contentFor('scripts') %>
+<%- contentFor('scripts') %>
     <script>
       const id = window.location.pathname.split('/').reverse()[0]
 
@@ -71,5 +71,5 @@
       })
     </script>
 
-    <%- contentFor('body') %>
-      <div id="pages-posts-show" class="container"></div>
+<%- contentFor('body') %>
+  <div id="pages-posts-show" class="container"></div>

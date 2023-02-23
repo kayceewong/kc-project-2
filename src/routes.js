@@ -30,17 +30,17 @@ router.get('/auth/signup', (await import('./controllers/pages/auth/signup.js')).
 router.get('/auth/login', (await import('./controllers/pages/auth/login.js')).default)
 
 // PAGES | MY POSTS | PRIVATE
+router.get('/my/posts', authenticateUser('html'), (await import('./controllers/pages/my/posts/index.js')).default)
 router.get('/my/posts/new', authenticateUser('html'), (await import('./controllers/pages/my/posts/new.js')).default)
 router.get('/my/posts/:id/edit', authenticateUser('html'), (await import('./controllers/pages/my/posts/edit.js')).default)
 router.get('/my/posts/:id', authenticateUser('html'), (await import('./controllers/pages/my/posts/show.js')).default)
-router.get('/my/posts', authenticateUser('html'), (await import('./controllers/pages/my/posts/index.js')).default)
 
 // PAGES | POSTS | PUBLIC
 router.get('/posts', (await import('./controllers/pages/posts/index.js')).default)
 router.get('/posts/:id', (await import('./controllers/pages/posts/show.js')).default)
 
 // PAGES | HOMEPAGE
-router.get('/posts/index', (await import('./controllers/pages/posts/index.js')).default)
+router.get('/', (req, res) => res.redirect('/posts'))
 
 // PAGES | NOT FOUND
 router.use((await import('./controllers/pages/not-found.js')).default)
