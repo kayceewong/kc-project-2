@@ -2,7 +2,7 @@
 
 import handleErrors from '../../_helpers/handle-errors.js'
 
-const controllersApiAuthLogout = async (req, res) => {
+const controllersApiAuth = async (req, res) => {
   try {
     await req.session.destroy()
 
@@ -12,4 +12,4 @@ const controllersApiAuthLogout = async (req, res) => {
   }
 }
 
-export default controllersApiAuthLogout
+export default controllersApiAuth

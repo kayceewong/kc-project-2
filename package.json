@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@prisma/client": "^3.9.1",
     "aws-sdk": "^2.1074.0",
     "bcrypt": "^5.1.0",
@@ -82,5 +83,8 @@
       ],
       "import/extensions": "off"
     }
-  }
+  },
+"prisma": {
+  "seed": "node prisma/seed.js"
+}
 }

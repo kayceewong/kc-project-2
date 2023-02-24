@@ -2,8 +2,9 @@
 
 import prisma from '../../../_helpers/prisma.js'
 import handleErrors from '../../../_helpers/handle-errors.js'
+import checkOwnership from './_check-ownership.js'
 
-const controllersApiMyPostsDestroy = async (req, res) => {
+const controllersApiPostsDestroy = async (req, res) => {
   try {
     const { params: { id } } = req
     const deletedPost = await prisma.post.delete({ where: { id: Number(id) } })
@@ -13,4 +14,7 @@ const controllersApiMyPostsDestroy = async (req, res) => {
   }
 }
 
-export default controllersApiMyPostsDestroy
+export default [
+  checkOwnership,
+  controllersApiPostsDestroy
+]

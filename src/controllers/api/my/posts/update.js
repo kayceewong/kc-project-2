@@ -1,15 +1,15 @@
-// src/controllers/api/my/posts/update.js
-
 import yup from 'yup'
 
 import prisma from '../../../_helpers/prisma.js'
 import handleErrors from '../../../_helpers/handle-errors.js'
+import checkOwnership from './_check-ownership.js'
 
 const updateSchema = yup.object({
-  content: yup.string().required()
+  title: yup.string().required(),
+  description: yup.string()
 })
 
-const controllersApiMyPostsUpdate = async (req, res) => {
+const controllersApiPostsUpdate = async (req, res) => {
   try {
     const { params: { id }, body } = req
     const verifiedData = await updateSchema.validate(body, { abortEarly: false, stripUnknown: true })
@@ -20,4 +20,7 @@ const controllersApiMyPostsUpdate = async (req, res) => {
   }
 }
 
-export default controllersApiMyPostsUpdate
+export default [
+  checkOwnership,
+  controllersApiPostsUpdate
+]
