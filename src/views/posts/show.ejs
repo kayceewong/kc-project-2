@@ -34,42 +34,42 @@
   `)
       }
 
-      const generatePage = (info) => {
-        const $page = $('#pages-posts-show')
-        const $title = generateTitle(info)
-        const $post = generatePost(info)
+const generatePage = (info) => {
+  const $page = $('#pages-posts-show')
+  const $title = generateTitle(info)
+  const $post = generatePost(info)
 
-        $page.html('').append($title).append($post)
-      }
+  $page.html('').append($title).append($post)
+}
 
-      const getPost = () => {
-        axios({
-          method: 'GET',
-          url: `/api/posts/${id}`
-        }).then((resp) => {
-          generatePage({ post: resp.data })
-        }).catch(() => {
-          generatePage()
-        })
-      }
+const getPost = () => {
+  axios({
+    method: 'GET',
+    url: `/api/posts/${id}`
+  }).then((resp) => {
+    generatePage({ post: resp.data })
+  }).catch(() => {
+    generatePage()
+  })
+}
 
-      const handleDelete = (e) => {
-        $(e.currentTarget).attr('disabled', true)
+const handleDelete = (e) => {
+  $(e.currentTarget).attr('disabled', true)
 
-        axios({
-          method: 'DELETE',
-          url: `/api/posts/${id}`
-        }).then((resp) => {
-          window.location.href = '/posts'
-        })
-      }
+  axios({
+    method: 'DELETE',
+    url: `/api/posts/${id}`
+  }).then((resp) => {
+    window.location.href = '/posts'
+  })
+}
 
-      $(document).ready(() => {
-        generatePage({ isLoading: true })
-        getPost()
-        $('#pages-posts-show').on('click', '#delete-post', handleDelete)
-      })
-    </script>
+$(document).ready(() => {
+  generatePage({ isLoading: true })
+  getPost()
+  $('#pages-posts-show').on('click', '#delete-post', handleDelete)
+})
+</script>
 
 <%- contentFor('body') %>
-  <div id="pages-posts-show" class="container"></div>
+<div id="pages-posts-show" class="container"></div>

@@ -30,38 +30,35 @@
     `
   }
 
-  const generatePage = (info) => {
-    const $page = $('#pages-my-posts-new')
-    const $title = generateTitle()
-    const $form = generateForm(info)
+const generatePage = (info) => {
+  const $page = $('#pages-my-posts-new')
+  const $title = generateTitle()
+  const $form = generateForm(info)
 
-    $page.html('').append($title).append($form)
-  }
+  $page.html('').append($title).append($form)
+}
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+const handleSubmit = (e) => {
+  e.preventDefault()
 
-    const data = new FormData(e.currentTarget)
-    $('#post-new-form button[type="submit"]').attr('disabled', true)
+  const data = new FormData(e.currentTarget)
+  $('#post-new-form button[type="submit"]').attr('disabled', true)
 
-    axios({
-      method: 'POST',
-      url: '/api/my/posts',
-      data
-    }).then((resp) => {
-      window.location.href = `/posts/${resp.data.id}`
-    }).catch((err) => {
-      generatePage({
-        post: parseFormData(data),
-        errors: err.response.data
-      })
-    })
-  }
-
-  $(document).ready(() => {
-    generatePage()
-    $('#pages-my-posts-new').on('submit', '#post-new-form', handleSubmit)
+  axios({
+    method: 'POST',
+    url: '/api/my/posts',
+    data
+  }).then((resp) => {
+    window.location.href = `/my/posts/${resp.data.id}`
+  }).catch((err) => {
+    generatePage({ post: parseFormData(data), errors: err.response.data })
   })
+}
+
+$(document).ready(() => {
+  generatePage()
+  $('#pages-my-posts-new').on('submit', '#post-new-form', handleSubmit)
+})
 </script>
 
 <%- contentFor('body') %>

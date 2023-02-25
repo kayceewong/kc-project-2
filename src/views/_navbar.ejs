@@ -1,60 +1,62 @@
+<!-- src/views/_layout.ejs -->
+
 <script>
-  const dynamicLinks = ({ user } = {}) => {
-    return `
-      <li class="nav-item"><a class="nav-link" aria-current="page" href="/posts">Home</a></li>
-      ${
-        user ? `
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">Menu</a>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="/my/profile">Profile</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/my/posts">My Posts</a></li>
-              <li><a class="dropdown-item" href="/my/posts/new">Create</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#" id="logout">Log Out</a></li>
-            </ul>
-          </li>
-        ` : `
-          <li class="nav-item"><a class="nav-link" href="/auth/login">Log In</a></li>
-          <li class="nav-item"><a class="nav-link" href="/auth/Signup">Signup</a></li>
-        `
-      }
-    `
-  }
+const dynamicLinks = ({ user } = {}) => {
+  return `
+    <li class="nav-item"><a class="nav-link" aria-current="page" href="/posts">Home</a></li>
+    ${
+      user ? `
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">Menu</a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><a class="dropdown-item" href="/my/profile">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/my/posts">My Posts</a></li>
+            <li><a class="dropdown-item" href="/my/posts/new">Create</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" id="logout">Log Out</a></li>
+          </ul>
+        </li>
+      ` : `
+        <li class="nav-item"><a class="nav-link" href="/auth/login">Log In</a></li>
+        <li class="nav-item"><a class="nav-link" href="/auth/Signup">Signup</a></li>
+      `
+    }
+  `
+}
 
-  const replaceDynamicLinks = (info) => {
-    const $links = dynamicLinks(info)
+const replaceDynamicLinks = (info) => {
+  const $links = dynamicLinks(info)
 
-    $('#links').html('').append($links)
-  }
+  $('#links').html('').append($links)
+}
 
-  const getMyProfile = () => {
-    axios({
-      method: 'GET',
-      url: '/api/my/profile',
-    }).then((resp) => {
-      replaceDynamicLinks({ user: resp.data })
-    }).catch(() => {
-      replaceDynamicLinks()
-    })
-  }
-
-  const handleLogout = (e) => {
-    e.preventDefault()
-    axios({
-      method: 'DELETE',
-      url: '/api/auth/logout'
-    }).then(() => {
-      window.location.href = '/'
-    })
-  }
-
-  $(document).ready(() => {
-    getMyProfile()
-    $('body').on('click', '#logout', handleLogout)
+const getMyProfile = () => {
+  axios({
+    method: 'GET',
+    url: '/api/my/profile',
+  }).then((resp) => {
+    replaceDynamicLinks({ user: resp.data })
+  }).catch(() => {
+    replaceDynamicLinks()
   })
+}
+
+const handleLogout = (e) => {
+  e.preventDefault()
+  axios({
+    method: 'DELETE',
+    url: '/api/auth/logout'
+  }).then(() => {
+    window.location.href = '/'
+  })
+}
+
+$(document).ready(() => {
+  getMyProfile()
+  $('body').on('click', '#logout', handleLogout)
+})
 </script>
 
 <nav class="navbar navbar-dark bg-dark fixed-top">

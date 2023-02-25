@@ -3,84 +3,81 @@
 <%- contentFor('styles') %>
 <%- contentFor('scripts') %>
 <script>
-  const id = window.location.pathname.split('/').reverse()[1]
+const id = window.location.pathname.split('/').reverse()[1]
 
-  const generateTitle = ({ isLoading, post } = {}) => {
-    if (isLoading) return `<div class="text-center">Loading...</div>`
-    if (!post) return `<h1 class="text-center mb-3">Post ${id} Not Found!</h1>`
+const generateTitle = ({ isLoading, post } = {}) => {
+  if (isLoading) return `<div class="text-center">Loading...</div>`
+  if (!post) return `<h1 class="text-center mb-3">Post ${id} Not Found!</h1>`
 
-    return `<h1 class="text-center mb-3">Edit Post ${id}</h1>`
-  }
+  return `<h1 class="text-center mb-3">Edit Post ${id}</h1>`
+}
 
-  const generateForm = ({ isLoading, post, errors } = {}) => {
-    if (isLoading || !post) return ''
+const generateForm = ({ isLoading, post, errors } = {}) => {
+  if (isLoading || !post) return ''
 
-    return `
-      <div class="row">
-        <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-          <form id="post-edit-form">
-            <div class="mb-3">
-              <label for="post-content" class="form-label">Content</label>
-              <textarea
-                id="post-content"
-                class="form-control ${errors?.content && 'is-invalid'}"
-                name="content"
-                rows="3"
-              >${post?.content || ''}</textarea>
-              <div class="invalid-feedback">${errors?.content || ''}</div>
-            </div>
+  return `
+    <div class="row">
+      <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <form id="post-edit-form">
+          <div class="mb-3">
+            <label for="post-content" class="form-label">Content</label>
+            <textarea
+              id="post-content"
+              class="form-control ${errors?.content && 'is-invalid'}"
+              name="content"
+              rows="3"
+            >${post?.content || ''}</textarea>
+            <div class="invalid-feedback">${errors?.content || ''}</div>
+          </div>
 
-            <button class="btn btn-primary" type="submit">Submit</button>
-          </form>
-        </div>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
       </div>
-    `
-  }
+    </div>
+  `
+}
 
-  const generatePage = (info) => {
-    const $page = $('#pages-my-posts-edit')
-    const $title = generateTitle(info)
-    const $form = generateForm(info)
+const generatePage = (info) => {
+  const $page = $('#pages-my-posts-edit')
+  const $title = generateTitle(info)
+  const $form = generateForm(info)
 
-    $page.html('').append($title).append($form)
-  }
+  $page.html('').append($title).append($form)
+}
 
-  const getPost = () => {
-    axios({
-      method: 'GET',
-      url: `/api/posts/${id}`
-    }).then((resp) => {
-      generatePage({ post: resp.data })
-    }).catch((err) => {
-      generatePage()
-    })
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    const data = new FormData(e.currentTarget)
-    $('#post-edit-form button[type="submit"]').attr('disabled', true)
-
-    axios({
-      method: 'PUT',
-      url: `/api/my/posts/${id}`,
-      data
-    }).then((resp) => {
-      window.location.href = `/posts/${resp.data.id}`
-    }).catch((err) => {
-      generatePage({
-        post: parseFormData(data),
-        errors: err.response.data
-      })
-    })
-  }
-
-  $(document).ready(() => {
-    generatePage({ isLoading: true })
-    getPost()
-    $('#pages-my-posts-edit').on('submit', '#post-edit-form', handleSubmit)
+const getPost = () => {
+  axios({
+    method: 'GET',
+    url: `/api/my/posts/${id}`
+  }).then((resp) => {
+    generatePage({ post: resp.data })
+  }).catch((err) => {
+    generatePage()
   })
+}
+
+const handleSubmit = (e) => {
+  e.preventDefault()
+
+  const data = new FormData(e.currentTarget)
+  $('#post-edit-form button[type="submit"]').attr('disabled', true)
+
+  axios({
+    method: 'PUT',
+    url: `/api/my/posts/${id}`,
+    data
+  }).then((resp) => {
+    window.location.href = `/my/posts/${resp.data.id}`
+  }).catch((err) => {
+    generatePage({ post: parseFormData(data), errors: err.response.data })
+  })
+}
+
+$(document).ready(() => {
+  generatePage({ isLoading: true })
+  getPost()
+  $('#pages-my-posts-edit').on('submit', '#post-edit-form', handleSubmit)
+})
 </script>
 
 <%- contentFor('body') %>

@@ -1,10 +1,10 @@
 <!-- src/views/auth/login.ejs -->
 
 <%- contentFor('styles') %>
-  <%- contentFor('scripts') %>
-    <script>
-      const generateForm = ({ user, errors } = {}) => {
-        return `
+<%- contentFor('scripts') %>
+<script>
+const generateForm = ({ user, errors } = {}) => {
+  return `
     <div class="row">
       <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
         <form id="login-form">
@@ -15,8 +15,8 @@
               class="form-control ${errors?.email && 'is-invalid'}"
               name="email"
               value="${user?.email || ''}"
-              type="email"
-            ></input>
+              type="email">
+            </input>
             <div class="invalid-feedback">${errors?.email || ''}</div>
           </div>
 
@@ -36,42 +36,42 @@
         </form>
       </div>
     </div>
-  `
-      }
+`
+}
 
-      const generatePage = (info) => {
-        const $page = $('#pages-auth-login')
-        const $title = '<h1 class="text-center">Login</h1>'
-        const $form = generateForm(info)
+const generatePage = (info) => {
+  const $page = $('#pages-auth-login')
+  const $title = '<h1 class="text-center">Login</h1>'
+  const $form = generateForm(info)
 
-        $page.html('').append($title).append($form)
-      }
+  $page.html('').append($title).append($form)
+}
 
-      const handleLogin = (e) => {
-        e.preventDefault()
+const handleLogin = (e) => {
+  e.preventDefault()
 
-        const data = new FormData(e.target)
-        $('#login-form button[type="submit"]').attr('disabled', true)
+  const data = new FormData(e.target)
+  $('#login-form button[type="submit"]').attr('disabled', true)
 
-        axios({
-          method: 'POST',
-          url: '/api/auth/login',
-          data
-        }).then(() => {
-          window.location.href = `/posts`
-        }).catch((err) => {
-          generatePage({
-            user: parseFormData(data),
-            errors: err.response.data
-          })
-        })
-      }
+  axios({
+    method: 'POST',
+    url: '/api/auth/login',
+    data
+  }).then(() => {
+    window.location.href = `my/posts`
+  }).catch((err) => {
+    generatePage({
+      user: parseFormData(data),
+      errors: err.response.data
+    })
+  })
+}
 
-      $(document).ready(() => {
-        generatePage()
-        $('#pages-auth-login').on('submit', '#login-form', handleLogin)
-      })
-    </script>
+$(document).ready(() => {
+  generatePage()
+  $('#pages-auth-login').on('submit', '#login-form', handleLogin)
+})
+script>
 
-    <%- contentFor('body') %>
-      <div id="pages-auth-login" class="container"></div>
+- contentFor('body') %>
+<div id="pages-auth-login" class="container"></div>

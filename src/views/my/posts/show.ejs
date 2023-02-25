@@ -1,21 +1,21 @@
 <!-- src/views/tweets/new.ejs -->
 
 <%- contentFor('styles') %>
-  <%- contentFor('scripts') %>
-    <script>
-      const id = window.location.href.split('/').reverse()[0]
+<%- contentFor('scripts') %>
+<script>
+const id = window.location.href.split('/').reverse()[0]
 
-      const generateTitle = ({ isLoading, post } = {}) => {
-        if (isLoading) return `<div class="text-center">Loading...</div>`
-        if (!post) return `<h1 class="text-center mb-3">Post ${id} Not Found!</h1>`
+const generateTitle = ({ isLoading, post } = {}) => {
+  if (isLoading) return `<div class="text-center">Loading...</div>`
+  if (!post) return `<h1 class="text-center mb-3">Post ${id} Not Found!</h1>`
 
-        return `<h1 class="text-center mb-3">Post ${id}</h1>`
-      }
+  return `<h1 class="text-center mb-3">Post ${id}</h1>`
+}
 
-      const generatePost = ({ isLoading, post } = {}) => {
-        if (isLoading || !post) return ''
+const generatePost = ({ isLoading, post } = {}) => {
+  if (isLoading || !post) return ''
 
-        return `
+  return `
     <div class="row">
       <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
         <div class="card">
@@ -32,44 +32,44 @@
       </div>
     </div>
   `
-      }
+}
 
-      const generatePage = (info) => {
-        const $page = $('#pages-my-posts-show')
-        const $title = generateTitle(info)
-        const $post = generatePost(info)
+const generatePage = (info) => {
+  const $page = $('#pages-my-posts-show')
+  const $title = generateTitle(info)
+  const $post = generatePost(info)
 
-        $page.html('').append($title).append($post)
-      }
+  $page.html('').append($title).append($post)
+}
 
-      const getPost = () => {
-        axios({
-          method: 'GET',
-          url: `/api/my/posts/${id}`
-        }).then((resp) => {
-          generatePage({ post: resp.data })
-        }).catch((err) => {
-          generatePage()
-        })
-      }
+const getPost = () => {
+  axios({
+    method: 'GET',
+    url: `/api/my/posts/${id}`
+  }).then((resp) => {
+    generatePage({ post: resp.data })
+  }).catch((err) => {
+    generatePage()
+  })
+}
 
-      const handleDelete = (e) => {
-        $(e.currentTarget).attr('disabled', true)
+const handleDelete = (e) => {
+  $(e.currentTarget).attr('disabled', true)
 
-        axios({
-          method: 'DELETE',
-          url: `/api/my/posts/${id}`
-        }).then((resp) => {
-          window.location.href = '/my/posts'
-        })
-      }
+  axios({
+    method: 'DELETE',
+    url: `/api/my/posts/${id}`
+  }).then((resp) => {
+    window.location.href = '/my/posts'
+  })
+}
 
-      $(document).ready(() => {
-        generatePage({ isLoading: true })
-        getPost()
-        $('#pages-my-posts-show').on('click', '#delete-post', handleDelete)
-      })
-    </script>
+$(document).ready(() => {
+  generatePage({ isLoading: true })
+  getPost()
+  $('#pages-my-posts-show').on('click', '#delete-post', handleDelete)
+})
+</script>
 
-    <%- contentFor('body') %>
-      <div id="pages-my-posts-show" class="container"></div>
+<%- contentFor('body') %>
+<div id="pages-my-posts-show" class="container"></div>
