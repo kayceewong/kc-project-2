@@ -10,6 +10,20 @@
   const generateForm = ({ post, errors } = {}) => {
     return `
       <div class="row">
+
+        <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+          <form id="post-new-form">
+            <div class="mb-3">
+              <label for="post-content" class="form-label">Title</label>
+              <textarea
+                id="post-content"
+                class="form-control ${errors?.content && 'is-invalid'}"
+                name="content"
+                rows="1"
+              >${post?.content || ''}</textarea>
+              <div class="invalid-feedback">${errors?.content || ''}</div>
+          </div>
+
         <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
           <form id="post-new-form">
             <div class="mb-3">

@@ -43,12 +43,22 @@ const generateForm = ({ user, errors } = {}) => {
             ></input>
             <div class="invalid-feedback">${errors?.passwordConfirmation || ''}</div>
           </div>
-
+          <div class="mb-3">
+            <label for="user-avatar" class="form-label">Avatar</label>
+            <input id="user-avatar" class="form-control" name="avatar" type="file"></input>
+            <div class="invalid-feedback">${errors?.avatar || ''}</div>
+          </div>
           <button class="btn btn-primary" type="submit">Submit</button>
         </form>
       </div>
     </div>
   `
+  if (user?.avatar?.constructor?.name === 'File') {
+    const $avatar = $('#user-avatar').attr('class', `form-control ${errors?.avatar && 'is-invalid'}`)
+    $form.find('#user-avatar').replaceWith($avatar)
+  }
+
+  return $form
 }
 
 const generatePage = (info) => {
@@ -61,6 +71,7 @@ const handleSignup = (e) => {
   e.preventDefault()
   const data = new FormData(e.target)
   $('#signup-form button[type="submit"]').attr('disabled', true)
+
   axios({
     method: 'POST',
     url: '/api/auth/signup',
@@ -79,5 +90,6 @@ $(document).ready(() => {
   $('#pages-auth-signup').on('submit', '#signup-form', handleSignup)
 })
 </script>
+
 <%- contentFor('body') %>
 <div id="pages-auth-signup" class="container"></div>

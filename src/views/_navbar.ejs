@@ -10,7 +10,6 @@ const dynamicLinks = ({ user } = {}) => {
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">Menu</a>
           <ul class="dropdown-menu dropdown-menu-dark">
-            <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="/my/posts">My Posts</a></li>
             <li><a class="dropdown-item" href="/my/posts/new">Create</a></li>
             <li><hr class="dropdown-divider"></li>
@@ -31,14 +30,23 @@ const replaceDynamicLinks = (info) => {
   $('#links').html('').append($links)
 }
 
+const addProfileImage = (profile) => {
+  const avatarUrl = profile?.avatar || 'https://ch6-kc-lesson-restful-api.s3.ap-southeast-1.amazonaws.com/KC-Logo.png'
+  $('.offcanvas-header').prepend(`
+    <img class="offcanvas-title" id="offcanvasDarkNavbarLabel" src="${avatarUrl}" width="50" height="auto"></img>
+  `)
+}
+
 const getMyProfile = () => {
   axios({
     method: 'GET',
     url: '/api/my/profile',
   }).then((resp) => {
     replaceDynamicLinks({ user: resp.data })
+    addProfileImage(resp.data)
   }).catch(() => {
     replaceDynamicLinks()
+    addProfileImage()
   })
 }
 
@@ -67,9 +75,9 @@ $(document).ready(() => {
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"></h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">

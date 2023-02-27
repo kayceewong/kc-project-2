@@ -6,6 +6,7 @@ import _ from 'lodash'
 
 import prisma from '../../_helpers/prisma.js'
 import handleErrors from '../../_helpers/handle-errors.js'
+import uploadFileAsync from '../../_helpers/upload-file.js'
 
 const signupSchema = yup.object({
   email: yup.string().email().required().test({
@@ -20,16 +21,21 @@ const signupSchema = yup.object({
     }
   }),
   password: yup.string().min(6).required(),
-  passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required()
+  passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required(),
+  avatar: yup.mixed().required()
 })
 
 const controllersApiAuthSignup = async (req, res) => {
   try {
     const { body } = req
     const verifiedData = await signupSchema.validate(body, { abortEarly: false, stripUnknown: true })
+
+    await uploadFileAsync(verifiedData, req)
+
     const dataToSave = {
       email: verifiedData.email,
-      passwordHash: await bcrypt.hash(verifiedData.password, 10)
+      passwordHash: await bcrypt.hash(verifiedData.password, 10),
+      avatar: verifiedData.avatar
     }
     const newUser = await prisma.user.create({ data: dataToSave })
 
