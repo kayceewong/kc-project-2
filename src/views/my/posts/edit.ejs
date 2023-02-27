@@ -39,10 +39,9 @@ const generateForm = ({ isLoading, post, errors } = {}) => {
 
 const generatePage = (info) => {
   const $page = $('#pages-my-posts-edit')
-  const $title = generateTitle(info)
   const $form = generateForm(info)
 
-  $page.html('').append($title).append($form)
+  $page.html('').append($form)
 }
 
 const getPost = () => {

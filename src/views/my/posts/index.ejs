@@ -10,7 +10,7 @@ const generateTitle = () => {
 const generatePost = (post) => {
   return `
     <div class="col">
-      <a class="card text-body" href="/posts/${post.id}" style="text-decoration: none;">
+      <a class="card text-body" href="/my/posts/${post.id}" style="text-decoration: none;">
         <div class="card-body text-center">
           <p class="card-text mb-3">${post.content}</p>
           <p class="card-subtitle text-muted mb-2">${moment(post.createdAt).format('YYYY/MM/DD')}</p>
@@ -26,7 +26,7 @@ const generatePosts = ({ isLoading, posts = [] } = {}) => {
     return `
       <h2 class="text-center mb-3">No Posts Found!</h2>
       <div class="text-center">
-        <a class="btn btn-primary" href="/posts/new">Create New Post!</a>
+        <a class="btn btn-primary" href="/my/posts/new">Create New Post!</a>
       </div>
     `
   }

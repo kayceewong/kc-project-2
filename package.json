@@ -84,7 +84,7 @@
       "import/extensions": "off"
     }
   },
-"prisma": {
-  "seed": "node prisma/seed.js"
-}
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
 }

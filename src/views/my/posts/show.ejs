@@ -20,8 +20,8 @@ const generatePost = ({ isLoading, post } = {}) => {
       <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
         <div class="card">
           <div class="card-body text-center">
-            <h5 class="card-title mb-2">${post.title}</h5>
-            <p class="card-text mb-2">${post.description}</p>
+
+            <p class="card-text mb-2">${post.content}</p>
 
             <div>
               <a href="/my/posts/${id}/edit" class="btn btn-primary btn-sm">Edit</a>
@@ -39,7 +39,7 @@ const generatePage = (info) => {
   const $title = generateTitle(info)
   const $post = generatePost(info)
 
-  $page.html('').append($title).append($post)
+  $page.html('').append($post)
 }
 
 const getPost = () => {

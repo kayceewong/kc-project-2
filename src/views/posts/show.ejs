@@ -36,10 +36,9 @@
 
 const generatePage = (info) => {
   const $page = $('#pages-posts-show')
-  const $title = generateTitle(info)
   const $post = generatePost(info)
 
-  $page.html('').append($title).append($post)
+  $page.html('').append($post)
 }
 
 const getPost = () => {

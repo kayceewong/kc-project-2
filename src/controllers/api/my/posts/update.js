@@ -5,7 +5,6 @@ import handleErrors from '../../../_helpers/handle-errors.js'
 import checkOwnership from './_check-ownership.js'
 
 const updateSchema = yup.object({
-  title: yup.string().required(),
   description: yup.string()
 })
 

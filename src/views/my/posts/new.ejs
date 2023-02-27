@@ -32,10 +32,9 @@
 
 const generatePage = (info) => {
   const $page = $('#pages-my-posts-new')
-  const $title = generateTitle()
   const $form = generateForm(info)
 
-  $page.html('').append($title).append($form)
+  $page.html('').append($form)
 }
 
 const handleSubmit = (e) => {
