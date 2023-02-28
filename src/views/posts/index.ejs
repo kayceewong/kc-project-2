@@ -4,20 +4,21 @@
 <%- contentFor('scripts') %>
 <script>
   const generateTitle = () => {
-    return '<h1 class="text-center mb-3">Posts</h1>'
+    return '<h1 class="text-center mb-3">Post</h1>'
   }
 
 const generatePost = (post) => {
   return `
-    <div class="col">
+    <div class="card" style="width: 18rem;">
+      <img src="" class="card-img-top" alt=" ">
+      <div class="card-body">
       <a class="card text-body" href="/posts/${post.id}" style="text-decoration: none;">
-        <div class="card-body text-center">
-          <p class="card-text mb-3">${post.content}</p>
-          <p class="card-subtitle text-muted mb-2">${moment(post.createdAt).format('YYYY/MM/DD')}</p>
-        </div>
+        <p class="card-text mb-3">${post.content}</p>
+        <p class="card-subtitle text-muted mb-2">${moment(post.createdAt).format('YYYY/MM/DD')}</p>
       </a>
+      </div>
     </div>
-  `
+    `
 }
 
 const generatePosts = ({ isLoading, posts = [] } = {}) => {

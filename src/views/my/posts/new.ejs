@@ -1,62 +1,68 @@
-<!-- src/views/tweets/new.ejs -->
-
+<!-- src/views/posts/new.ejs -->
 <%- contentFor('styles') %>
+<style>
+  .preview-image {
+    width: 100px;
+    height: auto;
+  }
+</style>
 <%- contentFor('scripts') %>
 <script>
   const generateTitle = () => {
     return '<h1 class="text-center mb-3">New Post</h1>'
-  }
+}
 
-  const generateForm = ({ post, errors } = {}) => {
-    return `
-      <div class="row">
-
-        <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-          <form id="post-new-form">
-            <div class="mb-3">
-              <label for="post-content" class="form-label">Title</label>
-              <textarea
-                id="post-content"
-                class="form-control ${errors?.content && 'is-invalid'}"
-                name="content"
-                rows="1"
-              >${post?.content || ''}</textarea>
-              <div class="invalid-feedback">${errors?.content || ''}</div>
+const generateForm = ({ post, errors } = {}) => {
+  const $form = $(`
+    <div class="row">
+      <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <form id="post-new-form">
+          <div class="mb-3">
+            <textarea
+              id="post-content"
+              class="form-control ${errors?.content && 'is-invalid'}"
+              name="content"
+              rows="3"
+            >${post?.content || ''}</textarea>
+            <div class="invalid-feedback">${errors?.content || ''}</div>
           </div>
 
-        <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-          <form id="post-new-form">
-            <div class="mb-3">
-              <label for="post-content" class="form-label">Content</label>
-              <textarea
-                id="post-content"
-                class="form-control ${errors?.content && 'is-invalid'}"
-                name="content"
-                rows="3"
-              >${post?.content || ''}</textarea>
-              <div class="invalid-feedback">${errors?.content || ''}</div>
-            </div>
+          <div class="mb-3 text-center">
+            <button class="btn btn-outline-primary" type="button">Add</button>
+          </div>
 
-            <button class="btn btn-primary ms-auto" type="submit">Submit</button>
-          </form>
-        </div>
+          <div class="mb-3">
+            <input type="file" class="file-input form-control" name="images[0][url]">
+          </div>
+
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="submit" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="btnradio1">Submit</label>
+          </div>
+        </form>
       </div>
-    `
+    </div>
+  `)
+
+  // TODO: code to extract existing file input in website to $form
+  if (post?.images?.[0]?.url?.constructor?.name === 'File') {
+    const $image = $('#user-image').attr('class', `form-control ${errors?.image && 'is-invalid'}`)
+    $form.find('#user-image').replaceWith($image)
   }
+
+  return $form
+}
 
 const generatePage = (info) => {
   const $page = $('#pages-my-posts-new')
   const $form = generateForm(info)
-
   $page.html('').append($form)
 }
 
 const handleSubmit = (e) => {
   e.preventDefault()
-
   const data = new FormData(e.currentTarget)
   $('#post-new-form button[type="submit"]').attr('disabled', true)
-
   axios({
     method: 'POST',
     url: '/api/my/posts',
@@ -68,11 +74,23 @@ const handleSubmit = (e) => {
   })
 }
 
+const handleFileSelection = (e) => {
+  const [file] = e.currentTarget.files
+
+  if (file) {
+    const url = URL.createObjectURL(file)
+    $(e.currentTarget).before(`<img class="preview-image" src="${url}">`)
+  }
+}
+
 $(document).ready(() => {
   generatePage()
   $('#pages-my-posts-new').on('submit', '#post-new-form', handleSubmit)
+  $('#pages-my-posts-new').on('change', '.file-input', handleFileSelection)
 })
-</script>
 
+
+
+</script>
 <%- contentFor('body') %>
 <div id="pages-my-posts-new" class="container"></div>

@@ -1,15 +1,22 @@
 <!-- src/views/posts/edit.ejs -->
 
 <%- contentFor('styles') %>
+<style>
+  .preview-image {
+    width: 100px;
+    height: auto;
+}
+
+</style>
 <%- contentFor('scripts') %>
 <script>
-const id = window.location.pathname.split('/').reverse()[1]
+  const id = window.location.pathname.split('/').reverse()[1]
 
-const generateTitle = ({ isLoading, post } = {}) => {
-  if (isLoading) return `<div class="text-center">Loading...</div>`
-  if (!post) return `<h1 class="text-center mb-3">Post ${id} Not Found!</h1>`
+  const generateTitle = ({ isLoading, post } = {}) => {
+    if (isLoading) return `<div class="text-center">Loading...</div>`
+    if (!post) return `<h1 class="text-center mb-3">Post ${id} Post Not Found!</h1>`
 
-  return `<h1 class="text-center mb-3">Edit Post ${id}</h1>`
+    return `<h1 class="text-center mb-3">Edit Post ${id}</h1>`
 }
 
 const generateForm = ({ isLoading, post, errors } = {}) => {
@@ -30,12 +37,29 @@ const generateForm = ({ isLoading, post, errors } = {}) => {
             <div class="invalid-feedback">${errors?.content || ''}</div>
           </div>
 
-          <button class="btn btn-primary" type="submit">Submit</button>
+            <div class="mb-3 text-center">
+            <button class="btn btn-outline-primary" type="Add" id="inputGroupFileAddon03">Add</button>
+          </div>
+
+          <div class="mb-3">
+            <input type="file" class="file-input form-control" name="images[0][url]">
+          </div>
+
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="submit" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="btnradio1">Submit</label>
+          </div>
         </form>
       </div>
     </div>
   `
+  if (user?.image?.constructor?.name === 'File') {
+    const $image = $('#user-image').attr('class', `form-control ${errors?.image && 'is-invalid'}`)
+    $form.find('#user-image').replaceWith($image)
+  }
+  return $form
 }
+
 
 const generatePage = (info) => {
   const $page = $('#pages-my-posts-edit')
@@ -72,10 +96,20 @@ const handleSubmit = (e) => {
   })
 }
 
+const handleFileSelection = (e) => {
+  const [file] = e.currentTarget.files
+
+  if (file) {
+    const url = URL.createObjectURL(file)
+    $(e.currentTarget).before(`<img class="preview-image" src="${url}">`)
+  }
+}
+
 $(document).ready(() => {
   generatePage({ isLoading: true })
   getPost()
   $('#pages-my-posts-edit').on('submit', '#post-edit-form', handleSubmit)
+  $('#pages-my-posts-edit').on('change', '.file-input', handleFileSelection)
 })
 </script>
 
