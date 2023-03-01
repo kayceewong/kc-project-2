@@ -8,39 +8,41 @@ const id = window.location.href.split('/').reverse()[0]
 const generateTitle = ({ isLoading, post } = {}) => {
   if (isLoading) return `<div class="text-center">Loading...</div>`
   if (!post) return `<h1 class="text-center mb-3">Post ${id} Not Found!</h1>`
-
   return `<h1 class="text-center mb-3">Post ${id}</h1>`
 }
 
-const generatePost = ({ isLoading, post } = {}) => {
-  if (isLoading || !post) return ''
-
-  return `
+  const generatePost = ({ isLoading, post } = {}) => {
+    if (isLoading || !post) return ''
+    return `
     <div class="row">
       <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
         <div class="card">
           <div class="card-body text-center">
-
-    <div class="container">
-      <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
-          <p class="card-text mb-2">${post.content}</p>
-          ${post.images.map((image) => `
-            <img src="${image.url}" alt="" class="img-fluid mb-2">
-            ${image.caption ? `<p class="card-text mb-2">${image.caption}</p>` : ''}
-          `).join('')}
-
-            <div>
-              <a href="/my/posts/${id}/edit" class="btn btn-primary btn-sm">Edit</a>
-              <button id="delete-post" class="btn btn-danger btn-sm">Delete</button>
+            <div class="container">
+              <div class="row">
+                <div class="col-12 col-md-6 offset-md-3">
+                  <p class="card-text mb-2">${post.content}</p>
+                  <div class="d-flex flex-wrap justify-content-center align-items-center">
+                    ${post.images.map((image) => `
+                    <div class="position-relative m-2">
+                      <img src="${image.url}" alt="" class="img-thumbnail">
+                      <canvas class="canvas"></canvas>
+                      ${image.caption ? `<p class="card-text mb-2">${image.caption}</p>` : ''}
+                    </div>
+                    `).join('')}
+                  </div>
+                  <div>
+                    <a href="/my/posts/${id}/edit" class="btn btn-primary btn-sm">Edit</a>
+                    <button id="delete-post" class="btn btn-danger btn-sm">Delete</button>
+                  </div>
+                </div>
+              </div>
             </div>
-
           </div>
         </div>
       </div>
-    </div>
-  `
-}
+    `
+  }
 
 const generatePage = (info) => {
   const $page = $('#pages-my-posts-show')
