@@ -55,7 +55,6 @@ const generateForm = ({ post, errors } = {}) => {
     </div>
   `)
 
-  // TODO: code to extract existing file input in website to $form
   post?.images?.forEach((imageData, i) => {
     if (imageData?.url?.constructor?.name === 'File') {
       const $image = $('.file-input').eq(0).attr('class', `file-input form-control ${errors?.images?.[i]?.url && 'is-invalid'}`)
@@ -65,8 +64,6 @@ const generateForm = ({ post, errors } = {}) => {
       $image.before(`<img class="preview-image" src="${url}">`)
     }
   })
-
-
 
   return $form
 }
