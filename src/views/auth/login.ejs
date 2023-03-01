@@ -19,18 +19,19 @@ const generateForm = ({ user, errors } = {}) => {
             </input>
             <div class="invalid-feedback">${errors?.email || ''}</div>
           </div>
-      <div class="mb-3">
-          <label for="user-password" class="form-label">Password</label>
-          <input
+
+          <div class="mb-3">
+            <label for="user-password" class="form-label">Password</label>
+            <input
             id="user-password"
             class="form-control ${errors?.password && 'is-invalid'}"
             name="password"
             value="${user?.password || ''}"
             type="password"
-          ></input>
-          <div class="invalid-feedback">${errors?.password || ''}</div>
-        </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+            ></input>
+            <div class="invalid-feedback">${errors?.password || ''}</div>
+          </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
       </form>
     </div>
   </div>

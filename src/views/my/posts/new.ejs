@@ -6,10 +6,26 @@
     height: auto;
   }
 </style>
+
 <%- contentFor('scripts') %>
 <script>
   const generateTitle = () => {
     return '<h1 class="text-center mb-3">New Post</h1>'
+  }
+
+const generateImageInputs = (post, errors) => {
+  const images = post?.images || []
+
+  return images.map((image, i) => {
+    return `
+      <div class="mb-3">
+        <label for="post-image-${i}" class="form-label">Image ${i + 1}</label>
+        <button class="delete-image btn btn-danger btn-sm float-end" data-index="${i}" type="button">Delete</button>
+        <input type="file" class="file-input form-control" name="images[${i}][url]">
+        <div class="invalid-feedback">${errors?.images?.[i]?.url || ''}</div>
+      </div>
+    `
+  }).join('')
 }
 
 const generateForm = ({ post, errors } = {}) => {
@@ -28,27 +44,29 @@ const generateForm = ({ post, errors } = {}) => {
           </div>
 
           <div class="mb-3 text-center">
-            <button class="btn btn-outline-primary" type="button">Add</button>
+            <div class="mb-2 fw-bold">Images (Optional)</div>
+            ${generateImageInputs(post, errors)}
+            <button id="add-post-image" button class="btn btn-outline-primary" type="button">Add Image</button>
           </div>
 
-          <div class="mb-3">
-            <input type="file" class="file-input form-control" name="images[0][url]">
-          </div>
-
-          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="submit" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="btnradio1">Submit</label>
-          </div>
+          <button class="btn btn-outline-primary" type="submit">Submit</button>
         </form>
       </div>
     </div>
   `)
 
   // TODO: code to extract existing file input in website to $form
-  if (post?.images?.[0]?.url?.constructor?.name === 'File') {
-    const $image = $('#user-image').attr('class', `form-control ${errors?.image && 'is-invalid'}`)
-    $form.find('#user-image').replaceWith($image)
-  }
+  post?.images?.forEach((imageData, i) => {
+    if (imageData?.url?.constructor?.name === 'File') {
+      const $image = $('.file-input').eq(0).attr('class', `file-input form-control ${errors?.images?.[i]?.url && 'is-invalid'}`)
+      $form.find('.file-input').eq(i).replaceWith($image)
+
+      const url = URL.createObjectURL(imageData.url)
+      $image.before(`<img class="preview-image" src="${url}">`)
+    }
+  })
+
+
 
   return $form
 }
@@ -62,7 +80,8 @@ const generatePage = (info) => {
 const handleSubmit = (e) => {
   e.preventDefault()
   const data = new FormData(e.currentTarget)
-  $('#post-new-form button[type="submit"]').attr('disabled', true)
+
+  // $('#post-new-form button[type="submit"]').attr('disabled', true)
   axios({
     method: 'POST',
     url: '/api/my/posts',
@@ -83,13 +102,28 @@ const handleFileSelection = (e) => {
   }
 }
 
+  const handleAddImage = () => {
+    const data = parseFormData(new FormData($('#post-new-form')[0]))
+    data.images = [...data?.images || [], { url: '' }]
+
+    generatePage({ post: data })
+  }
+
+  const handleDeleteImage = (e) => {
+    const data = parseFormData(new FormData($('#post-new-form')[0]))
+    const index = $(e.currentTarget).data('index')
+    data.images.splice(index, 1)
+    $('.file-input').eq(index).remove()
+    generatePage({ post: data })
+  }
+
 $(document).ready(() => {
   generatePage()
   $('#pages-my-posts-new').on('submit', '#post-new-form', handleSubmit)
   $('#pages-my-posts-new').on('change', '.file-input', handleFileSelection)
+  $('#pages-my-posts-new').on('click', '#add-post-image', handleAddImage)
+  $('#pages-my-posts-new').on('click', '.delete-image', handleDeleteImage)
 })
-
-
 
 </script>
 <%- contentFor('body') %>

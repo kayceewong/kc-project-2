@@ -19,6 +19,27 @@
     return `<h1 class="text-center mb-3">Edit Post ${id}</h1>`
 }
 
+const generateImageInputs = (post, errors) => {
+  const images = post?.images || []
+  const imagesErrs = errors?.images || []
+
+    return images.map((image, i) => {
+    return `
+      <div class="mb-3">
+        <label for="post-image-${i}" class="form-label">Image ${i + 1}</label>
+        <button class="delete-image btn btn-danger btn-sm float-end" data-index="${i}" type="button">Delete</button>
+        <input
+          id="post-image-${i}"
+          class="form-control ${imagesErrs[i]?.name && 'is-invalid'}"
+          name="images[${i}][name]"
+          value="${image?.name || ''}"
+        ></input>
+        <div class="invalid-feedback">${imagesErrs[i]?.name || ''}</div>
+      </div>
+    `
+  }).join('')
+}
+
 const generateForm = ({ isLoading, post, errors } = {}) => {
   if (isLoading || !post) return ''
 
@@ -38,7 +59,9 @@ const generateForm = ({ isLoading, post, errors } = {}) => {
           </div>
 
             <div class="mb-3 text-center">
-            <button class="btn btn-outline-primary" type="Add" id="inputGroupFileAddon03">Add</button>
+              <div class="mb-2 fw-bold">Images (Optional)</div>
+            ${generateImageInputs(post, errors)}
+            <button id="add-post-image" button class="btn btn-outline-primary" type="button" id="inputGroupFileAddon03">Add Image</button>
           </div>
 
           <div class="mb-3">
@@ -105,11 +128,27 @@ const handleFileSelection = (e) => {
   }
 }
 
+  const handleAddImage = () => {
+    const data = parseFormData(new FormData($('#post-edit-form')[0]))
+    data.image = [...data?.images || [], { name: '' }]
+
+    generatePage({ post: data })
+  }
+
+  const handleDeleteImage = (e) => {
+    const data = parseFormData(new FormData($('#post-edit-form')[0]))
+    data.images.splice($(e.currentTarget).data('index'), 1)
+
+    generatePage({ post: data })
+  }
+
 $(document).ready(() => {
   generatePage({ isLoading: true })
   getPost()
   $('#pages-my-posts-edit').on('submit', '#post-edit-form', handleSubmit)
   $('#pages-my-posts-edit').on('change', '.file-input', handleFileSelection)
+  $('#pages-posts-edit').on('click', '#add-post-image', handleAddImage)
+  $('#pages-posts-edit').on('click', '.delete-image', handleDeleteImage)
 })
 </script>
 

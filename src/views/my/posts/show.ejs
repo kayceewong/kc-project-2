@@ -1,4 +1,4 @@
-<!-- src/views/tweets/show.ejs -->
+<!-- src/views/posts/show.ejs -->
 
 <%- contentFor('styles') %>
 <%- contentFor('scripts') %>
@@ -21,12 +21,20 @@ const generatePost = ({ isLoading, post } = {}) => {
         <div class="card">
           <div class="card-body text-center">
 
-            <p class="card-text mb-2">${post.content}</p>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-8 offset-md-2">
+          <p class="card-text mb-2">${post.content}</p>
+          ${post.images.map((image) => `
+            <img src="${image.url}" alt="${image.caption}" class="img-fluid mb-2">
+            ${image.caption ? `<p class="card-text mb-2">${image.caption}</p>` : ''}
+          `).join('')}
 
             <div>
               <a href="/my/posts/${id}/edit" class="btn btn-primary btn-sm">Edit</a>
               <button id="delete-post" class="btn btn-danger btn-sm">Delete</button>
             </div>
+
           </div>
         </div>
       </div>
