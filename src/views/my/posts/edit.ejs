@@ -20,6 +20,8 @@ const generateImageInputs = (post, errors) => {
     return `
     <div class="mb-3">
       <label for="post-image-${i}" class="form-label">Image ${i + 1}</label>
+      <div class="container">
+    </div>
       <button class="delete-image btn btn-danger btn-sm float-end" data-index="${i}" type="button">Delete</button>
       <input type="file" class="file-input form-control" name="images[${i}][url]">
       <div class="invalid-feedback">${errors?.images?.[i]?.url || ''}</div>
