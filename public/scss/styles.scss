@@ -1,5 +1,8 @@
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+
+$font-montserrat: 'Montserrat', sans-serif;
 
 * {
   margin: 0;
@@ -24,16 +27,31 @@ body::before {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
-  /* set the height to the height you want the image to cover */
+  height: 40vh;
+
   width: 100%;
   background-image: url('https://ch6-kc-lesson-restful-api.s3.ap-southeast-1.amazonaws.com/Fotoboek+Logo.png');
-  background-size: cover;
+  background-size: center;
   background-position: center;
+  background-repeat: no-repeat;
   z-index: 1;
-  /* set the z-index to a higher value than the background gradient */
 }
 
 .card {
 background: linear-gradient(115deg, #e4f5f5 10%, #afa7db 90%);
+}
+
+h1 {
+  font-family: $font-montserrat;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.image-frame {
+  border: 2px solid #ccc;
+  padding: 10px;
+}
+
+#form-wrapper {
+  margin-top: 150px;
 }

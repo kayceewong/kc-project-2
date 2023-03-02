@@ -9,30 +9,27 @@
 
 <%- contentFor('scripts') %>
 <script>
-  const id = window.location.pathname.split('/').reverse()[1]
+const id = window.location.pathname.split('/').reverse()[1]
+const generateTitle = () => {
+  return '<h1 class="text-center mb-3">Edit Post</h1>'
+}
+const generateImageInputs = (post, errors) => {
+  const images = post?.images || []
+  return images.map((image, i) => {
+    return `
+      <div class="mb-3">
+        <label for="post-image-${i}" class="form-label">Image ${i + 1}</label>
+        <button class="delete-image btn btn-danger btn-sm float-end" data-index="${i}" type="button">Delete</button>
+        <input type="file" class="file-input form-control ${errors?.images?.[i]?.url && 'is-invalid'}" name="images[${i}][url]" data-index="${i}">
+        <div class="invalid-feedback">${errors?.images?.[i]?.url || ''}</div>
+        <input type="hidden" name="images[${i}][id]" value="${image?.id || ''}">
+      </div>
+    `
+  }).join('')
+}
 
-  const generateTitle = () => {
-    return '<h1 class="text-center mb-3">Edit Post</h1>'
-  }
-
-  const generateImageInputs = (post, errors) => {
-    const images = post?.images || []
-
-    return images.map((image, i) => {
-      return `
-        <div class="mb-3">
-          <label for="post-image-${i}" class="form-label">Image ${i + 1}</label>
-          <button class="delete-image btn btn-danger btn-sm float-end" data-index="${i}" type="button">Delete</button>
-          <input type="file" class="file-input form-control ${errors?.images?.[i]?.url && 'is-invalid'}" name="images[${i}][url]" data-index="${i}">
-          <div class="invalid-feedback">${errors?.images?.[i]?.url || ''}</div>
-          <input type="hidden" name="images[${i}][id]" value="${image?.id || ''}">
-        </div>
-      `
-    }).join('')
-  }
-
-  const generateForm = ({ post, errors } = {}) => {
-    const $form = $(`
+const generateForm = ({ post, errors } = {}) => {
+  const $form = $(`
     <div class="row">
       <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
         <form id="post-edit-form">

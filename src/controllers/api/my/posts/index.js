@@ -1,5 +1,4 @@
 // src/controllers/api/my/posts/index.js
-
 import prisma from '../../../_helpers/prisma.js'
 import handleErrors from '../../../_helpers/handle-errors.js'
 

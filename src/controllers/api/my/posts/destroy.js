@@ -1,5 +1,4 @@
 // src/controllers/api/my/posts/destroy.js
-
 import prisma from '../../../_helpers/prisma.js'
 import handleErrors from '../../../_helpers/handle-errors.js'
 import checkOwnership from './_check-ownership.js'

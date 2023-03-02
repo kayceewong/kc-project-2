@@ -1,5 +1,4 @@
 // src/controllers/api/my/posts/create.js
-
 import yup from 'yup'
 import uploadFileAsync from '../../../_helpers/upload-file.js'
 

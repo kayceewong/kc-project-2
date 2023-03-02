@@ -1,5 +1,4 @@
 <!-- src/views/auth/signup.ejs -->
-
 <%- contentFor('styles') %>
 <%- contentFor('scripts') %>
 <script>
@@ -63,9 +62,8 @@ const generateForm = ({ user, errors } = {}) => {
 
 const generatePage = (info) => {
   const $page = $('#pages-auth-signup')
-  const $title = '<h1 class="text-center">Signup</h1>'
   const $form = generateForm(info)
-  $page.html('').append($title).append($form)
+  $page.html('').append($form)
 }
 const handleSignup = (e) => {
   e.preventDefault()

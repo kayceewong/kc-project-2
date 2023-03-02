@@ -1,5 +1,4 @@
 <!-- src/views/posts/show.ejs -->
-
 <%- contentFor('styles') %>
 <%- contentFor('scripts') %>
 <script>
@@ -16,7 +15,7 @@ const generatePost = ({ isLoading, post } = {}) => {
   return `
     <div class="row">
       <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-        <div class="card-body text-center">
+        <div class="card-body text-center style="padding-top: 200px;"">
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-6 offset-md-3">
@@ -24,7 +23,7 @@ const generatePost = ({ isLoading, post } = {}) => {
                 <div class="d-flex justify-content-center align-items-center">
                   ${post.images.map((image) => `
                   <div class="position-relative m-2">
-                    <img src="${image.url}" alt="" width="300" height="auto">
+                    <img src="${image.url}" alt="" width="300" height="auto" class="image-frame">
                     ${image.caption ? `<p class="card-text mb-2">${image.caption}</p>` : ''}
                   </div>
                   `).join('')}

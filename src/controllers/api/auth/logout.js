@@ -1,5 +1,4 @@
 // src/controllers/auth/logout.js
-
 import handleErrors from '../../_helpers/handle-errors.js'
 
 const controllersApiAuth = async (req, res) => {
