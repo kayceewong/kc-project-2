@@ -14,32 +14,28 @@ const generateTitle = ({ isLoading, post } = {}) => {
 const generatePost = ({ isLoading, post } = {}) => {
   if (isLoading || !post) return ''
   return `
-<div class="row">
-  <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-    <div class="card">
-      <div class="card-body text-center">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-md-6 offset-md-3">
-              <p class="card-text mb-2">${post.content}</p>
-              <div class="d-flex flex-wrap justify-content-center align-items-center">
-                ${post.images.map((image) => `
-                <div class="position-relative m-2">
-                  <img src="${image.url}" alt="" class="img-thumbnail">
-                  ${image.caption ? `<p class="card-text mb-2">${image.caption}</p>` : ''}
+    <div class="row">
+      <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <div class="card-body text-center">
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-6 offset-md-3">
+                <p class="card-text mb-2">${post.content}</p>
+                <div class="d-flex justify-content-center align-items-center">
+                  ${post.images.map((image) => `
+                  <div class="position-relative m-2">
+                    <img src="${image.url}" alt="" width="300" height="auto">
+                    ${image.caption ? `<p class="card-text mb-2">${image.caption}</p>` : ''}
+                  </div>
+                  `).join('')}
                 </div>
-                `).join('')}
-              </div>
               <div>
-
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-`
+  `
 }
 
 const generatePage = (info) => {

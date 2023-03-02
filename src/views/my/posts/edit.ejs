@@ -9,62 +9,72 @@
 
 <%- contentFor('scripts') %>
 <script>
-const generateTitle = () => {
-  return '<h1 class="text-center mb-3">Edit Post</h1>'
-}
+  const id = window.location.pathname.split('/').reverse()[1]
 
-const generateImageInputs = (post, errors) => {
-  const images = post?.images || []
+  const generateTitle = () => {
+    return '<h1 class="text-center mb-3">Edit Post</h1>'
+  }
 
-  return images.map((image, i) => {
-    return `
-    <div class="mb-3">
-      <label for="post-image-${i}" class="form-label">Image ${i + 1}</label>
-      <div class="container">
-    </div>
-      <button class="delete-image btn btn-danger btn-sm float-end" data-index="${i}" type="button">Delete</button>
-      <input type="file" class="file-input form-control" name="images[${i}][url]">
-      <div class="invalid-feedback">${errors?.images?.[i]?.url || ''}</div>
-    </div>
-  `
-  }).join('')
-}
+  const generateImageInputs = (post, errors) => {
+    const images = post?.images || []
 
-const generateForm = ({ post, errors } = {}) => {
-  const $form = $(`
-  <div class="row">
-    <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-      <form id="post-edit-form">
+    return images.map((image, i) => {
+      return `
         <div class="mb-3">
-          <textarea
-            id="post-content"
-            class="form-control ${errors?.content && 'is-invalid'}"
-            name="content"
-            rows="3"
-          >${post?.content || ''}</textarea>
-          <div class="invalid-feedback">${errors?.content || ''}</div>
+          <label for="post-image-${i}" class="form-label">Image ${i + 1}</label>
+          <button class="delete-image btn btn-danger btn-sm float-end" data-index="${i}" type="button">Delete</button>
+          <input type="file" class="file-input form-control ${errors?.images?.[i]?.url && 'is-invalid'}" name="images[${i}][url]" data-index="${i}">
+          <div class="invalid-feedback">${errors?.images?.[i]?.url || ''}</div>
+          <input type="hidden" name="images[${i}][id]" value="${image?.id || ''}">
         </div>
+      `
+    }).join('')
+  }
 
-        <div class="mb-3 text-center">
-          <div class="mb-2 fw-bold">Images (Optional)</div>
-          ${generateImageInputs(post, errors)}
-          <button id="add-post-image" button class="btn btn-outline-primary" type="button">Add Image</button>
-        </div>
+  const generateForm = ({ post, errors } = {}) => {
+    const $form = $(`
+    <div class="row">
+      <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <form id="post-edit-form">
+          <div class="mb-3">
+            <textarea
+              id="post-content"
+              class="form-control ${errors?.content && 'is-invalid'}"
+              name="content"
+              rows="3"
+            >${post?.content || ''}</textarea>
+            <div class="invalid-feedback">${errors?.content || ''}</div>
+          </div>
 
-        <button class="btn btn-outline-primary" type="submit">Submit</button>
-      </form>
+          <div class="mb-3 text-center">
+            <div class="mb-2 fw-bold">Images (Optional)</div>
+            ${generateImageInputs(post, errors)}
+          </div>
+
+          <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+          <button id="add-post-image" type="button" class="btn btn-primary btn-sm">Add Image</button>
+        </form>
+      </div>
     </div>
-  </div>
   `)
 
-post?.images?.forEach((imageData, i) => {
-  if (imageData?.url?.constructor?.name === 'File') {
-    const $image = $('.file-input').eq(0).attr('class', `file-input form-control ${errors?.images?.[i]?.url && 'is-invalid'}`)
-    $form.find('.file-input').eq(i).replaceWith($image)
-
-    const url = URL.createObjectURL(imageData.url)
-    $image.before(`<img class="preview-image" src="${url}">`)
-  }
+  post?.images?.forEach((imageData, i) => {
+    if (imageData?.url) {
+      if (imageData?.url?.constructor?.name === 'File') {
+        if (imageData?.url?.size > 0) {
+          const $image = $('.file-input').eq(0).attr('class', `file-input form-control ${errors?.images?.[i]?.url && 'is-invalid'}`)
+          $form.find('.file-input').eq(i).replaceWith($image)
+          const url = URL.createObjectURL(imageData.url)
+          $image.before(`<img class="preview-image" src="${url}">`)
+        } else {
+          const $previewImage = $('.file-input').eq(i).siblings('.preview-image')
+          $form.find('.file-input').eq(i).before($previewImage)
+        }
+      } else if (imageData?.url?.constructor?.name === 'String') {
+        const url = imageData.url
+        $form.find('.file-input').eq(i).before(`<img class="preview-image" src="${url}">`)
+      }
+    }
   })
 
   return $form
@@ -91,9 +101,9 @@ const handleSubmit = (e) => {
   e.preventDefault()
   const data = new FormData(e.currentTarget)
 
-axios({
-    method: 'POST',
-    url: '/api/my/posts',
+  axios({
+    method: 'PUT',
+    url: `/api/my/posts/${id}`,
     data
   }).then((resp) => {
     window.location.href = `/my/posts/${resp.data.id}`
@@ -107,7 +117,12 @@ const handleFileSelection = (e) => {
 
   if (file) {
     const url = URL.createObjectURL(file)
+    $(e.currentTarget).siblings('input, img').remove()
     $(e.currentTarget).before(`<img class="preview-image" src="${url}">`)
+  } else {
+    const index = $(e.currentTarget).data('index')
+    $('.file-input').eq(index).siblings('input, img').remove()
+    console.log('No file selected')
   }
 }
 
@@ -128,6 +143,7 @@ const handleDeleteImage = (e) => {
 
 $(document).ready(() => {
   generatePage()
+  getPost()
   $('#pages-my-posts-edit').on('submit', '#post-edit-form', handleSubmit)
   $('#pages-my-posts-edit').on('change', '.file-input', handleFileSelection)
   $('#pages-my-posts-edit').on('click', '#add-post-image', handleAddImage)

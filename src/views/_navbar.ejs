@@ -4,6 +4,7 @@
 const dynamicLinks = ({ user } = {}) => {
   return `
     <li class="nav-item"><a class="nav-link" aria-current="page" href="/posts">Home</a></li>
+    <li><hr class="dropdown"></li>
     ${
       user ? `
         <li class="nav-item dropdown">
@@ -11,6 +12,7 @@ const dynamicLinks = ({ user } = {}) => {
             aria-expanded="false">Menu</a>
           <ul class="dropdown-menu dropdown-menu-dark">
             <li><a class="dropdown-item" href="/my/posts">My Posts</a></li>
+            <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="/my/posts/new">Create</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#" id="logout">Log Out</a></li>
@@ -33,7 +35,7 @@ const replaceDynamicLinks = (info) => {
 const addProfileImage = (profile) => {
   const avatarUrl = profile?.avatar || 'https://ch6-kc-lesson-restful-api.s3.ap-southeast-1.amazonaws.com/KC-Logo.png'
   $('.offcanvas-header').prepend(`
-    <img class="offcanvas-title" id="offcanvasDarkNavbarLabel" src="${avatarUrl}" width="50" height="auto"></img>
+    <img class="offcanvas-title" id="offcanvasDarkNavbarLabel" src="${avatarUrl}" width="100" height="auto"></img>
   `)
 }
 
@@ -66,7 +68,7 @@ $(document).ready(() => {
 })
 </script>
 
-<nav class="navbar navbar-dark bg-dark fixed-top" style="height: 50px;">
+<nav class="navbar navbar-dark bg-dark fixed-top" style="height: 60px;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/posts"><img
       src="https://ch6-kc-lesson-restful-api.s3.ap-southeast-1.amazonaws.com/KC-Logo.png" alt="Logo" width="40" height="35">

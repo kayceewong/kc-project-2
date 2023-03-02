@@ -16,4 +16,24 @@ body {
   height: 100vh;
   width: 100%;
   background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%);
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  /* set the height to the height you want the image to cover */
+  width: 100%;
+  background-image: url('https://ch6-kc-lesson-restful-api.s3.ap-southeast-1.amazonaws.com/Fotoboek+Logo.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  /* set the z-index to a higher value than the background gradient */
+}
+
+.card {
+background: linear-gradient(115deg, #e4f5f5 10%, #afa7db 90%);
 }

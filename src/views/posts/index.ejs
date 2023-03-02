@@ -25,9 +25,7 @@ const generatePosts = ({ isLoading, posts = [] } = {}) => {
   if (posts.length === 0) {
     return `
       <h2 class="text-center mb-3">No Posts Found!</h2>
-      <div class="text-center">
-        <a class="btn btn-primary" href="/posts/new">Create New Post!</a>
-      </div>
+      <div class="text-center"></div>
     `
   }
 
@@ -35,6 +33,7 @@ const generatePosts = ({ isLoading, posts = [] } = {}) => {
     <div class="row">
       <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
         <div id="posts-list" class="row row-cols-1 g-3">
+          <div class="d-flex flex-wrap align-items-center">
           ${posts.map((post) => generatePost(post)).join('')}
         </div>
       </div>
